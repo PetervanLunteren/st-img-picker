@@ -34,6 +34,17 @@ img = image_select("Label", ["image1.png", "image2.png", "image3.png"])
 st.write(img)
 ```
 
+### Parameters
+
+- `label` (str): The label shown above the images.
+- `images` (list): The images to show. Allowed image formats are paths to local files, URLs, PIL images, and numpy arrays.
+- `captions` (list of str): The captions to show below the images. Defaults to `None`, in which case no captions are shown.
+- `index` (int, optional): The index of the image that is selected by default. Defaults to 0.
+- `use_container_width` (bool, optional): Whether to stretch the images to the width of the surrounding container. Defaults to `True`.
+- `use_multiselect` (bool, optional): Whether to allow multiple images to be selected. Defaults to `False`.
+- `return_value` ("original" or "index", optional): Whether to return the original object passed into `images` or the index of the selected image. Defaults to "original".
+- `key` (str, optional): The key of the component. Defaults to `None`.
+
 See [the demo app](https://image-select.streamlitapp.com/) for a detailed guide!
 
 

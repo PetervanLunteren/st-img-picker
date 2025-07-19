@@ -50,6 +50,7 @@ arrays. You can also add captions (optional)!
 with st.echo():
     from streamlit_image_select import image_select
 
+    use_multiselect = st.checkbox("Select multiple images?", False)
     img = image_select(
         label="Select a cat",
         images=[
@@ -59,6 +60,7 @@ with st.echo():
             np.array(Image.open("images/cat4.jpeg")),
         ],
         captions=["A cat", "Another cat", "Oh look, a cat!", "Guess what, a cat..."],
+        use_multiselect=use_multiselect,
     )
 
 # st.file_uploader("Or upload your own cat!", type=["jpg", "jpeg", "png"])
@@ -71,40 +73,44 @@ st.info(
     icon="↔️",
 )
 
-if isinstance(img, np.ndarray):
-    position = (55, 15)
-elif isinstance(img, Image.Image):
-    position = (30, 90)
-elif img == "images/cat1.jpeg":
-    position = (65, 70)
-elif (
-    img
-    == "https://bagongkia.github.io/react-image-picker/0759b6e526e3c6d72569894e58329d89.jpg"
-):
-    position = (15, 70)
+if use_multiselect:
+    st.write("Selected images:")
+    st.write(img)
 else:
-    position = (100, 100)
+    if isinstance(img, np.ndarray):
+        position = (55, 15)
+    elif isinstance(img, Image.Image):
+        position = (30, 90)
+    elif img == "images/cat1.jpeg":
+        position = (65, 70)
+    elif (
+        img
+        == "https://bagongkia.github.io/react-image-picker/0759b6e526e3c6d72569894e58329d89.jpg"
+    ):
+        position = (15, 70)
+    else:
+        position = (100, 100)
 
-# if isinstance(img, np.ndarray):
-#     position = (60, -15)
-# elif isinstance(img, Image.Image):
-#     position = (40, 60)
-# elif img == "images/cat1.jpeg":
-#     position = (65, 35)
-# elif img == "https://bagongkia.github.io/react-image-picker/0759b6e526e3c6d72569894e58329d89.jpg":
-#     position = (20, 40)
-# else:
-#     position = (100, 100)
+    # if isinstance(img, np.ndarray):
+    #     position = (60, -15)
+    # elif isinstance(img, Image.Image):
+    #     position = (40, 60)
+    # elif img == "images/cat1.jpeg":
+    #     position = (65, 35)
+    # elif img == "https://bagongkia.github.io/react-image-picker/0759b6e526e3c6d72569894e58329d89.jpg":
+    #     position = (20, 40)
+    # else:
+    #     position = (100, 100)
 
-"""
-## Step 3: Use the return value
-The return value is just the same object you passed into the list of images above. 
-Note that you can pipe it directly into `st.image` (or add some cool sunglasses 😎). 
-"""
+    """
+    ## Step 3: Use the return value
+    The return value is just the same object you passed into the list of images above.
+    Note that you can pipe it directly into `st.image` (or add some cool sunglasses 😎).
+    """
 
-with st.echo():
-    st.write(str(img)[:100])
-    st.image(add_sunglasses(img, position))
+    with st.echo():
+        st.write(str(img)[:100])
+        st.image(add_sunglasses(img, position))
 
 st.info(
     'Want the index of the selected image instead? Set `return_value="index"`.',

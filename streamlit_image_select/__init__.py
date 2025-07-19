@@ -42,6 +42,7 @@ def image_select(
     index: int = 0,
     *,
     use_container_width: bool = True,
+    use_multiselect: bool = False,
     return_value: str = "original",
     key: str = None,
 ):
@@ -57,6 +58,8 @@ def image_select(
             Defaults to 0.
         use_container_width (bool, optional): Whether to stretch the images to the
             width of the surrounding container. Defaults to True.
+        use_multiselect (bool, optional): Whether to allow multiple images to be
+            selected. Defaults to False.
         return_value ("original" or "index", optional): Whether to return the
             original object passed into `images` or the index of the selected image.
             Defaults to "original".
@@ -98,18 +101,32 @@ def image_select(
         captions=captions,
         index=index,
         use_container_width=use_container_width,
+        use_multiselect=use_multiselect,
         key=key,
         default=index,
     )
 
     # The frontend component returns the index of the selected image but we want to
     # return the actual image.
-    if return_value == "original":
-        return images[component_value]
-    elif return_value == "index":
-        return component_value
+    if use_multiselect:
+        if component_value is None:
+            component_value = []
+        if return_value == "original":
+            return [images[i] for i in component_value]
+        elif return_value == "index":
+            return component_value
+        else:
+            raise ValueError(
+                "`return_value` must be either 'original' or 'index' "
+                f"but is '{return_value}'."
+            )
     else:
-        raise ValueError(
-            "`return_value` must be either 'original' or 'index' "
-            f"but is '{return_value}'."
-        )
+        if return_value == "original":
+            return images[component_value]
+        elif return_value == "index":
+            return component_value
+        else:
+            raise ValueError(
+                "`return_value` must be either 'original' or 'index' "
+                f"but is '{return_value}'."
+            )

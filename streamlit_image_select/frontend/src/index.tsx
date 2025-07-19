@@ -62,12 +62,25 @@ function onRender(event: Event): void {
       }
 
       img.onclick = function () {
-        container.querySelectorAll(".selected").forEach((el) => {
-          el.classList.remove("selected")
-        })
-        Streamlit.setComponentValue(i)
-        box.classList.add("selected")
-        img.classList.add("selected")
+        if (data.args["use_multiselect"]) {
+          box.classList.toggle("selected")
+          img.classList.toggle("selected")
+          const selectedIndices = Array.from(
+            container.querySelectorAll(".selected")
+          ).map((el) =>
+            Array.from(container.querySelectorAll(".item")).indexOf(
+              el.parentElement as HTMLElement
+            )
+          )
+          Streamlit.setComponentValue(selectedIndices)
+        } else {
+          container.querySelectorAll(".selected").forEach((el) => {
+            el.classList.remove("selected")
+          })
+          Streamlit.setComponentValue(i)
+          box.classList.add("selected")
+          img.classList.add("selected")
+        }
       }
     })
   }
