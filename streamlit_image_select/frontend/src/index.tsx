@@ -33,7 +33,10 @@ function onRender(event: Event): void {
   label.textContent = data.args["label"]
   let images = data.args["images"]
   let captions = data.args["captions"]
-  // console.log(captions)
+  let allowMultiple = data.args["allow_multiple"]
+  let selectedIndices: number[] = allowMultiple 
+    ? (Array.isArray(data.args["index"]) ? data.args["index"] : [])
+    : [data.args["index"]]
 
   if (container.childNodes.length === 0) {
     images.forEach((image: string, i: number) => {
@@ -56,18 +59,37 @@ function onRender(event: Event): void {
         caption.textContent = captions[i]
       }
 
-      if (i === data.args["index"]) {
+      if (selectedIndices.includes(i)) {
         box.classList.add("selected")
         img.classList.add("selected")
       }
 
       img.onclick = function () {
-        container.querySelectorAll(".selected").forEach((el) => {
-          el.classList.remove("selected")
-        })
-        Streamlit.setComponentValue(i)
-        box.classList.add("selected")
-        img.classList.add("selected")
+        if (allowMultiple) {
+          // Toggle selection for multi-select
+          const isSelected = selectedIndices.includes(i)
+          if (isSelected) {
+            // Remove from selection
+            selectedIndices = selectedIndices.filter(idx => idx !== i)
+            box.classList.remove("selected")
+            img.classList.remove("selected")
+          } else {
+            // Add to selection
+            selectedIndices.push(i)
+            box.classList.add("selected")
+            img.classList.add("selected")
+          }
+          Streamlit.setComponentValue(selectedIndices)
+        } else {
+          // Single selection behavior (original logic)
+          container.querySelectorAll(".selected").forEach((el) => {
+            el.classList.remove("selected")
+          })
+          selectedIndices = [i]
+          Streamlit.setComponentValue(i)
+          box.classList.add("selected")
+          img.classList.add("selected")
+        }
       }
     })
   }
