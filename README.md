@@ -1,11 +1,13 @@
 # streamlit-image-select 🖼️
 
-[![PyPI](https://img.shields.io/pypi/v/streamlit-image-select)](https://pypi.org/project/streamlit-image-select/)
+**Fork of [streamlit-image-select](https://github.com/jrieke/streamlit-image-select) with multiple selection support.**
 
 **An image select component for Streamlit.**
 
 This custom component works just like `st.selectbox` but with images. It's a great option
 if you want to let the user select an example image, e.g. for a computer vision app!
+
+**NEW**: This fork adds support for selecting multiple images with the `allow_multiple` parameter.
 
 ---
 
@@ -28,13 +30,39 @@ pip install streamlit-image-select
 
 ## Usage
 
+### Single Selection (Original)
 ```python
 from streamlit_image_select import image_select
 img = image_select("Label", ["image1.png", "image2.png", "image3.png"])
 st.write(img)
 ```
 
-See [the demo app](https://image-select.streamlitapp.com/) for a detailed guide!
+### Multiple Selection (NEW)
+```python
+from streamlit_image_select import image_select
+imgs = image_select(
+    "Select multiple images", 
+    ["image1.png", "image2.png", "image3.png"],
+    allow_multiple=True
+)
+st.write(f"Selected {len(imgs)} images")
+```
+
+## Parameters
+
+- **label** (str): The label shown above the images.
+- **images** (list): The images to show. Supports local files, URLs, PIL images, and numpy arrays.
+- **captions** (list of str, optional): Captions to show below images. Defaults to None.
+- **index** (int or list, optional): Initially selected image(s). For single selection: int. For multiple selection: list of ints. Defaults to 0.
+- **use_container_width** (bool, optional): Whether to stretch images to container width. Defaults to True.
+- **return_value** ("original" or "index", optional): Return original objects or indices. Defaults to "original".
+- **allow_multiple** (bool, optional): Enable multiple selection. Defaults to False.
+- **key** (str, optional): Component key. Defaults to None.
+
+## Returns
+
+- **Single selection** (`allow_multiple=False`): Returns single item (image or index)
+- **Multiple selection** (`allow_multiple=True`): Returns list of items (images or indices)
 
 
 ## Development
