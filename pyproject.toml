@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "st-img-picker"
-version = "1.0.0"
+version = "1.0.1"
 description = "A Streamlit custom component for image selection with single and multi-selection support"
 authors = ["Johannes Rieke <johannes.rieke@gmail.com>", "peteraddax"]
 license = "MIT"
@@ -13,7 +13,7 @@ include = ["streamlit_image_select/frontend/build/**/*"]
 python = "^3.8, !=3.9.7"
 streamlit = "^1.19.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 watchdog = "^2.1.9"
 black = "^22.6.0"
 isort = "^5.10.1"
