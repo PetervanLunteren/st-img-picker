@@ -2,7 +2,7 @@
 name = "st-img-picker"
 version = "1.0.1"
 description = "A Streamlit custom component for image selection with single and multi-selection support"
-authors = ["Johannes Rieke <johannes.rieke@gmail.com>", "peteraddax"]
+authors = ["Peter van Lunteren"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "st_img_picker"}]
