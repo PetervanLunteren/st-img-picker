@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "st-img-picker"
-version = "1.0.1"
+version = "1.0.2"
 description = "A Streamlit custom component for image selection with single and multi-selection support"
 authors = ["Peter van Lunteren"]
 license = "MIT"
