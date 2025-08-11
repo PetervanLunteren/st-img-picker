@@ -35,15 +35,15 @@ def _encode_numpy(img):
     return f"data:image/jpeg;base64, {encoded}"
 
 
-def image_select(
+def img_picker(
     label: str,
     images: list,
     captions: list = None,
-    index: int = 0,
+    index = None,
     *,
     use_container_width: bool = True,
     return_value: str = "original",
-    allow_multiple: bool = False,
+    allow_multiple: bool = True,
     key: str = None,
 ):
     """Shows several images and returns the image(s) selected by the user.
@@ -56,14 +56,14 @@ def image_select(
             None, in which case no captions are shown.
         index (int or list, optional): The index(es) of the image(s) that are selected 
             by default. When allow_multiple=False, must be an int. When allow_multiple=True,
-            must be a list of ints (can be empty). Defaults to 0.
+            must be a list of ints (can be empty). Defaults to [] for multi-select, 0 for single-select.
         use_container_width (bool, optional): Whether to stretch the images to the
             width of the surrounding container. Defaults to True.
         return_value ("original" or "index", optional): Whether to return the
             original object(s) passed into `images` or the index(es) of the selected image(s).
             Defaults to "original".
         allow_multiple (bool, optional): Whether to allow selecting multiple images.
-            When True, returns a list. Defaults to False.
+            When True, returns a list. Defaults to True.
         key (str, optional): The key of the component. Defaults to None.
 
     Returns:
@@ -79,6 +79,10 @@ def image_select(
             "The number of images and captions must be equal but `captions` has "
             f"{len(captions)} elements and `images` has {len(images)} elements."
         )
+    
+    # Set default index based on allow_multiple if not provided
+    if index is None:
+        index = [] if allow_multiple else 0
     
     # Validate index parameter based on allow_multiple
     if allow_multiple:

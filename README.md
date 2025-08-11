@@ -1,51 +1,56 @@
-# streamlit-image-select 🖼️
+# st-img-picker
 
 **Fork of [streamlit-image-select](https://github.com/jrieke/streamlit-image-select) with multiple selection support.**
 
-**An image select component for Streamlit.**
+**A Streamlit custom component for image selection.**
 
 This custom component works just like `st.selectbox` but with images. It's a great option
-if you want to let the user select an example image, e.g. for a computer vision app!
-
-**NEW**: This fork adds support for selecting multiple images with the `allow_multiple` parameter.
+if you want to let the user select example images, e.g. for a computer vision app.
 
 ---
-
-<h3 align="center">
-  🏃 <a href="https://image-select.streamlitapp.com/">Try out the demo app</a> 🏃
-</h3>
-
----
-
-<p align="center">
-    <a href="https://image-select.streamlitapp.com/"><img src="images/demo.gif" width=600></a>
-</p>
-
 
 ## Installation
 
 ```bash
-pip install streamlit-image-select
+pip install st-img-picker
 ```
 
-## Usage
+## Simple usage
 
-### Single Selection (Original)
 ```python
-from streamlit_image_select import image_select
-img = image_select("Label", ["image1.png", "image2.png", "image3.png"])
-st.write(img)
-```
+import streamlit as st
+from st_img_picker import img_picker
 
-### Multiple Selection (NEW)
-```python
-from streamlit_image_select import image_select
-imgs = image_select(
-    "Select multiple images", 
-    ["image1.png", "image2.png", "image3.png"],
-    allow_multiple=True
+imgs = img_picker(
+    "Select images", 
+    ["image1.png", "image2.png", "image3.png"]
 )
 st.write(f"Selected {len(imgs)} images")
+```
+
+### Advanced usage
+```python
+from st_img_picker import img_picker
+import numpy as np
+from PIL import Image
+
+# Mix different image types
+imgs = img_picker(
+    label="Choose your favorites",
+    images=[
+        "local/path/image.jpg",              # Local file
+        "https://example.com/image.png",     # URL
+        Image.open("another_image.jpg"),     # PIL Image
+        np.array(Image.open("numpy.jpg"))    # NumPy array
+    ],
+    captions=["Local", "Remote", "PIL", "NumPy"],
+    index=[0, 2],                            # Pre-select first and third
+    use_container_width=True,
+    return_value="index",                    # Return indices instead of images
+    key="my_picker"
+)
+
+st.write(f"Selected indices: {imgs}")
 ```
 
 ## Parameters
@@ -53,17 +58,16 @@ st.write(f"Selected {len(imgs)} images")
 - **label** (str): The label shown above the images.
 - **images** (list): The images to show. Supports local files, URLs, PIL images, and numpy arrays.
 - **captions** (list of str, optional): Captions to show below images. Defaults to None.
-- **index** (int or list, optional): Initially selected image(s). For single selection: int. For multiple selection: list of ints. Defaults to 0.
+- **index** (int or list, optional): Initially selected image(s). For single selection: int. For multiple selection: list of ints. Defaults to [] for multi-select, 0 for single-select.
 - **use_container_width** (bool, optional): Whether to stretch images to container width. Defaults to True.
 - **return_value** ("original" or "index", optional): Return original objects or indices. Defaults to "original".
-- **allow_multiple** (bool, optional): Enable multiple selection. Defaults to False.
+- **allow_multiple** (bool, optional): Enable multiple selection. Defaults to **True**.
 - **key** (str, optional): Component key. Defaults to None.
 
 ## Returns
 
-- **Single selection** (`allow_multiple=False`): Returns single item (image or index)
 - **Multiple selection** (`allow_multiple=True`): Returns list of items (images or indices)
-
+- **Single selection** (`allow_multiple=False`): Returns single item (image or index)
 
 ## Development
 
@@ -76,8 +80,8 @@ contribute to its development!
 First, clone the repository:
 
 ```bash
-git clone https://github.com/jrieke/streamlit-image-select.git
-cd streamlit-image-select
+git clone <your-fork-repo-url>
+cd st-img-picker
 ```
 
 Install the Python dependencies:
@@ -89,20 +93,20 @@ poetry install --dev
 And install the frontend dependencies:
 
 ```bash
-cd streamlit_image_select/frontend
+cd st_img_picker/frontend
 npm install
 ```
 
 ### Making changes
 
-To make changes, first go to `streamlit_image_select/__init__.py` and make sure the 
+To make changes, first go to `st_img_picker/__init__.py` and make sure the 
 variable `_RELEASE` is set to `False`. This will make the component use the local 
 version of the frontend code, and not the built project. 
 
 Then, start one terminal and run:
 
 ```bash
-cd streamlit_image_select/frontend
+cd st_img_picker/frontend
 npm start
 ```
 
@@ -118,22 +122,21 @@ streamlit run streamlit_app.py
 
 This copies the demo app to the root dir (so you have something to work with and see 
 your changes!) and then starts it. Now you can make changes to the Python or Javascript 
-code in `streamlit_image_select` and the demo app should update automatically!
+code in `st_img_picker` and the demo app should update automatically!
 
-If nothing updates, make sure the variable `_RELEASE` in `streamlit_image_select/__init__.py` is set to `False`. 
-
+If nothing updates, make sure the variable `_RELEASE` in `st_img_picker/__init__.py` is set to `False`. 
 
 ### Publishing on PyPI
 
-Switch the variable `_RELEASE` in `streamlit_image_select/__init__.py` to `True`. 
+Switch the variable `_RELEASE` in `st_img_picker/__init__.py` to `True`. 
 Increment the version number in `pyproject.toml`. Make sure the copy of the demo app in 
 the root dir is deleted or merged back into the demo app in `demo/streamlit_app.py`.
 
 Build the frontend code with:
 
 ```bash
-cd streamlit_image_select/frontend
-npm run build
+cd st_img_picker/frontend
+NODE_OPTIONS="--openssl-legacy-provider" npm run build
 ```
 
 After this has finished, build and upload the package to PyPI:
@@ -144,24 +147,11 @@ poetry build
 poetry publish
 ```
 
-## Changelog
+## License
 
-### 0.6.0 (March 28, 2023)
-- Removed `st.experimental_memo`, which is deprecated. 
-- Changed minimum version of Streamlit to 1.19.
-  
-### 0.5.1 (November 20, 2022)
-- Hotfix, forgot to switch the RELEASE variable back to True :wink:
+MIT License - See LICENSE file for details.
 
-### 0.5.0 (November 20, 2022)
-- Added `return_value` parameter to be able to get the index of the selected image.
-- Improved error messages. 
+## Credits
 
-### 0.4.0 (November 20, 2022)
-- Added `index` parameter to set the initially selected image.
-- Improved input arg checks. 
-
-### 0.3.0 (November 13, 2022)
-- Added `use_container_width` parameter to customize the width of the component. 
-- Made `key` and `use_container_width` parameters keyword-only.
-- Refactored CSS classes.
+- Original [streamlit-image-select](https://github.com/jrieke/streamlit-image-select) by Johannes Rieke
+- Fork enhancements by Peter van Lunteren

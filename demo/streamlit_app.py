@@ -6,7 +6,7 @@ import requests
 import streamlit as st
 from PIL import Image
 
-from streamlit_image_select import image_select
+from st_img_picker import img_picker
 
 
 def add_sunglasses(img, position):
@@ -48,9 +48,9 @@ arrays. You can also add captions (optional)!
 """
 
 with st.echo():
-    from streamlit_image_select import image_select
+    from st_img_picker import img_picker
 
-    img = image_select(
+    img = img_picker(
         label="Select a cat",
         images=[
             "images/cat1.jpeg",
@@ -102,7 +102,7 @@ NEW: Set `allow_multiple=True` to select multiple images. Click to toggle select
 """
 
 with st.echo():
-    multi_imgs = image_select(
+    multi_imgs = img_picker(
         label="Select multiple cats (click to toggle)",
         images=[
             "images/cat1.jpeg",
@@ -134,7 +134,7 @@ with st.echo():
 ## Step 4: Multi-selection with indices
 """
 with st.echo():
-    multi_indices = image_select(
+    multi_indices = img_picker(
         label="Get indices instead of images",
         images=[
             "images/cat1.jpeg",
@@ -159,7 +159,7 @@ st.info(
 ## Step 5: Get creative!
 Here's the complete API reference:
 """
-st.help(image_select)
+st.help(img_picker)
 
 """
 ## Step 6

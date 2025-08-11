@@ -5,9 +5,9 @@ description = "A Streamlit custom component for image selection with single and 
 authors = ["Johannes Rieke <johannes.rieke@gmail.com>", "peteraddax"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "streamlit_image_select"}]
+packages = [{include = "st_img_picker"}]
 # This is required so the frontend code is properly included in the wheel. 
-include = ["streamlit_image_select/frontend/build/**/*"]
+include = ["st_img_picker/frontend/build/**/*"]
 
 [tool.poetry.dependencies]
 python = "^3.8, !=3.9.7"
